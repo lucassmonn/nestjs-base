@@ -5,30 +5,28 @@ import {
   Body,
   Patch,
   Param,
-  UseGuards,
 } from "@nestjs/common"
 import { UserService } from "./user.service"
 import { CreateUserDto } from "./dto/create-user.dto"
 import { UpdateUserDto } from "./dto/update-user.dto"
 import { User } from "./entities/user.entity"
-import { AuthGuard } from "../auth/auth.guard"
+import { Public } from "../auth/public.decorator"
 
 @Controller("user")
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @Public()
   @Post()
   create(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.userService.create(createUserDto)
   }
 
-  @UseGuards(AuthGuard)
   @Get(":id")
   findOne(@Param("id") id: string): Promise<User> {
     return this.userService.findOne(id)
   }
 
-  @UseGuards(AuthGuard)
   @Patch(":id")
   update(
     @Param("id") id: string,

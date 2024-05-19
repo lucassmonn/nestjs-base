@@ -12,12 +12,14 @@ import { AuthService } from "./auth.service"
 import { AuthGuard } from "./auth.guard"
 import { LoginDto } from "./dto/login.dto"
 import { ProfileDto } from "./dto/profile.dto"
+import { Public } from "./public.decorator"
 
 @Controller("auth")
 export class AuthController {
   constructor(private authService: AuthService) {}
 
   @HttpCode(HttpStatus.OK)
+  @Public()
   @Post("login")
   signIn(@Body() loginDto: LoginDto): Promise<{ access_token: string }> {
     return this.authService.signIn(loginDto)
